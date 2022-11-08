@@ -1,0 +1,79 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.github.rtyvz.myapplication'
+}
+
+android {
+
+    compileSdk 32
+    defaultConfig {
+        applicationId "com.github.rtyvz.myapplication"
+        minSdk 28
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+
+        debug {
+            applicationIdSuffix = ".debug"
+            minifyEnabled true
+            debuggable true
+        }
+
+        newBuildType {
+            minifyEnabled true
+            debuggable true
+            initWith debug
+            versionNameSuffix ".newBuildType"
+        }
+    }
+
+    flavorDimensions = ['version']
+
+    productFlavors {
+        dev {
+            dimension = "version"
+            versionNameSuffix = ".dev"
+        }
+
+        prod {
+            dimension = "version"
+            versionNameSuffix = ".prod"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+
+    sourceSets {
+        dev {
+            res {
+                srcDirs "..\\src\\main\\res"
+            }
+        }
+
+        prod{
+            res{
+                srcDirs"..\\src\\debug\\res"
+            }
+        }
+    }
+    addDependencies.mustRunAfter(build)
+}
