@@ -1,0 +1,19 @@
+apply from: "$rootDir/build_scripts/depensions-versions.gradle"
+
+ext {
+    coreDependencies = [
+            core_ktx  : "androidx.core:core-ktx:$core_ktx_version",
+            appcompat : "androidx.appcompat:appcompat:$app_compat_version",
+            material  : "com.google.android.material:material:$material_version",
+            constraint: "androidx.constraintlayout:constraintlayout:$constraint_version"
+    ]
+
+    navigation = [
+            fragment: "androidx.navigation:navigation-fragment-ktx:$navigation_version",
+            ui_ktx  : "androidx.navigation:navigation-ui-ktx:$navigation_version"
+    ]
+
+    network = [
+            retrofit: "com.squareup.retrofit2:retrofit:$retrofit_version"
+    ]
+}

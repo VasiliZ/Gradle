@@ -4,6 +4,8 @@ plugins {
     id 'com.github.rtyvz.myapplication'
 }
 
+apply from: "$rootDir/build_scripts/dependencies.gradle"
+
 android {
 
     compileSdk 32
@@ -69,11 +71,14 @@ android {
             }
         }
 
-        prod{
-            res{
-                srcDirs"..\\src\\debug\\res"
+        prod {
+            res {
+                srcDirs "..\\src\\debug\\res"
             }
         }
     }
-    addDependencies.mustRunAfter(build)
+    dependencies {
+        implementation coreDependencies.values()
+        implementation navigation.values()
+    }
 }
