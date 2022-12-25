@@ -1,3 +1,6 @@
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -77,8 +80,60 @@ android {
             }
         }
     }
+
     dependencies {
         implementation coreDependencies.values()
         implementation navigation.values()
+
+    }
+
+    tasks.register("copyJni") {
+        it.doLast {
+            String flavour = getCurrentFlavour().toString()
+            String targetPath = createTargetDir(flavour)
+            copyFile(targetPath)
+        }
     }
 }
+
+tasks.named("preBuild") {
+    it.finalizedBy("copyJni")
+}
+
+def getCurrentFlavour() {
+    String taskRequests = gradle.getStartParameter().getTaskRequests().toString()
+
+    Pattern pattern
+
+    if (taskRequests.contains("assemble")) {
+        pattern = Pattern.compile("assemble(\\w+)(Debug|Release)")
+    } else {
+        pattern = Pattern.compile("generate(\\w+)(Debug|Release)")
+    }
+
+    Matcher matcher = pattern.matcher(taskRequests)
+    if (matcher.find()) {
+        return matcher.group(1).toLowerCase()
+    } else {
+        return ""
+    }
+}
+
+def createTargetDir(String targetDirName) {
+    String rootPath = "$rootDir" + "\\" + "rootDirForCopy"
+    delete(rootPath)
+    mkdir(rootPath + "\\" + targetDirName)
+    return rootPath + "\\" + targetDirName
+}
+
+def copyFile(String targetPath) {
+    copy {
+        from("D:\\testDir\\simple.cpp")
+        into(targetPath)
+    }
+}
+
+
+
+
+
