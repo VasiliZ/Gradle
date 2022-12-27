@@ -43,6 +43,14 @@ android {
         }
     }
 
+    splits {
+        density {
+            enable = true
+            exclude "ldpi", "xxhdpi", "xxxhdpi"
+            compatibleScreens("small", "normal", "large", "xlarge")
+        }
+    }
+
     flavorDimensions = ['version']
 
     productFlavors {
